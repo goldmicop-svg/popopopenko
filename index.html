@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#101628">
+  <title>Потапенко: побег</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js"}}
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Потапенко: побег"><span class="brand-mark">↗</span><span>НЕ ПОПАДИСЬ<span class="brand-sub">ПОТАПЕНКО: ПОБЕГ</span></span></a>
+      <div class="top-stats"><div class="wallet"><span class="coin-mini">Ш</span><strong id="coinCount">0</strong><span>шумиликов</span></div><div class="account-chip"><span class="account-dot"></span><b id="accountName">Гость</b><button id="logoutButton">Выйти</button></div><button class="icon-button hidden" id="adminOpen" aria-label="Админ-панель">♜</button><button class="icon-button" id="settingsOpen" aria-label="Настройки">⚙</button></div>
+    </header>
+    <main class="layout">
+      <section class="game-panel">
+        <div class="scene-wrap" id="sceneWrap">
+          <div id="scene"></div>
+          <div class="scene-vignette"></div>
+          <div class="scene-header"><div class="level-label"><span class="live-dot"></span><span id="levelLabel">УРОВЕНЬ 01</span></div><div class="timer"><span>⏱</span><b id="timer">00:00</b></div></div>
+          <div class="objective"><span class="objective-icon">✦</span><span id="objectiveText">Собери 8 шумиликов и продержись 35 секунд</span></div>
+          <div class="toast" id="toast"></div>
+          <div class="center-card lobby-card" id="centerCard"><div class="eyebrow">ВЫБЕРИ БОЙЦА · ГЛАВНАЯ АРЕНА</div><div class="lobby-portrait"><img id="lobbyPortrait" src="assets/brawlers/character_01.jpg" alt="Боец"></div><div class="lobby-title"><div><span class="rarity-tag" id="rarityTag">ОБЫЧНЫЙ</span><h1 id="heroName">Шумыч</h1></div><div class="hero-level" id="heroLevel">УР. 1</div></div><div class="ability-preview"><span class="ability-icon" id="abilityIcon">⚡</span><span><b id="abilityName">Электросамокат</b><small id="abilityDesc">Мчись на самокате 5 секунд</small></span><kbd id="abilityKey">E</kbd></div><div class="mode-switch"><button data-mode="levels" class="selected">Уровни</button><button data-mode="arcade">Аркада · выживание</button></div><button class="upgrade-button" id="upgradeButton">⬆ Улучшить <span id="upgradeCost">80</span><span class="coin-mini">Ш</span></button><button class="primary-button play-large" id="playButton">В БОЙ! <span>→</span></button><div class="key-hint"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>движение</span><kbd>E</kbd><span>способность</span></div></div>
+          <div class="end-card hidden" id="endCard"><div class="end-icon" id="endIcon">✦</div><div class="eyebrow" id="endEyebrow">НЕПОХОЖЕ НА ПОБЕГ</div><h2 id="endTitle">Потапенко догнал!</h2><p id="endText">Попробуй ещё раз — ты справишься.</p><button class="primary-button" id="againButton">Ещё раз <span>↻</span></button></div>
+          <div class="touch-controls" id="touchControls" aria-label="Сенсорное управление"><div class="joystick" id="joystick"><div class="joy-ring"></div><div class="joy-knob" id="joyKnob"></div></div><button class="ability-button" id="abilityButton"><span id="mobileAbilityIcon">⚡</span><b>СПОСОБНОСТЬ</b><small id="abilityCooldown">ГОТОВО</small></button></div>
+          <button class="quick-upgrade" id="quickUpgrade" title="Улучшить бойца">⬆</button>
+          <button class="pause-button" id="pauseButton" aria-label="Пауза">Ⅱ</button>
+        </div>
+        <div class="below-scene"><span><i class="sparkle">✦</i> Внимание: Потапенко становится быстрее с каждым уровнем</span><button class="text-button" id="howButton">Как играть <span>↗</span></button></div>
+        <div class="brawler-shelf"><div class="shelf-heading"><span>МОИ БОЙЦЫ <b id="rosterCount">1/18</b></span><span>Нажми на бойца, чтобы выбрать</span></div><div class="roster-strip" id="characterShelf"></div></div>
+      </section>
+      <aside class="sidebar">
+        <section class="side-card profile-card"><div class="section-heading"><div><div class="eyebrow">ТВОЙ ПРОГРЕСС</div><h2>Прокачка</h2></div><span class="status-tag" id="levelBadge">УР. 1</span></div><div class="profile-row"><div class="avatar-ring"><img id="sidePortrait" src="assets/brawlers/character_01.jpg" alt="Боец"></div><div><strong id="sideHeroName">Шумыч</strong><span id="sideAbility">Электросамокат</span></div></div><div class="upgrade-meter"><span id="upgradeLabel">Скорость · способность</span><b id="upgradeRank">I</b><div><i id="upgradeProgress"></i></div></div><div class="profile-progress"><span>Рекорд выживания</span><b id="bestTime">00:00</b></div></section>
+        <section class="side-card levels-card"><div class="section-heading"><div><div class="eyebrow">ПРОГРЕСС</div><h2>Уровни</h2></div><button class="text-button" id="allLevels">Все <span>→</span></button></div><div id="levelList" class="level-list"></div><p class="side-note">Пройди уровень, чтобы открыть следующий.</p></section>
+        <section class="case-card"><div class="case-art"><div class="case-glow"></div><div class="case-box"><span>✦</span></div><span class="case-spark s1">✧</span><span class="case-spark s2">✦</span></div><div class="case-info"><div class="eyebrow">СЮРПРИЗ ВНУТРИ</div><h2>Кейс шумилика</h2><p>Монеты и большой бонус!</p><button class="case-button" id="openCase">Открыть <span class="coin-mini">Ш</span><b>120</b></button></div></section>
+        <button class="settings-row" id="settingsOpen2"><span class="setting-icon">⚙</span><span><b>Настройки</b><small>Звук и управление</small></span><span class="row-arrow">→</span></button>
+      </aside>
+    </main>
+    <footer><span>ПОТАПЕНКО: ПОБЕГ <i>·</i> БЕТА</span><span>Сделано для смелых <b>✦</b></span></footer>
+  </div>
+
+  <div class="modal hidden" id="settingsModal"><div class="modal-backdrop" data-close></div><div class="modal-box"><button class="close-button" data-close>×</button><div class="eyebrow">ПОД СЕБЯ</div><h2>Настройки</h2><label class="setting-line"><span><b>Громкость</b><small>Звуки игры</small></span><span class="volume-control"><input id="volume" type="range" min="0" max="100" value="45"><b id="volumeValue">45%</b></span></label><div class="setting-line"><span><b>Устройство</b><small>Выбери удобное управление</small></span><div class="device-select"><button data-device="pc" class="selected">⌨ Компьютер</button><button data-device="phone">▣ Телефон</button></div></div><div class="modal-note">На телефоне появится экранный джойстик. На компьютере — WASD или стрелки.</div></div></div>
+  <div class="modal hidden" id="infoModal"><div class="modal-backdrop" data-close></div><div class="modal-box"><button class="close-button" data-close>×</button><div class="eyebrow">ПРАВИЛА ПРОСТЫЕ</div><h2>Как играть</h2><div class="rules"><p><span>01</span> Беги от Потапенко — он всегда идёт за тобой.</p><p><span>02</span> Подбирай золотые шумилики на арене.</p><p><span>03</span> Собери 8 монет и продержись 35 секунд, чтобы пройти уровень.</p><p><span>04</span> Нажми E или кнопку на телефоне, чтобы применить способность бойца.</p><p><span>05</span> Кейс открывает нового бойца; шумилики ещё и улучшают бойца.</p></div></div></div>
+  <div class="modal hidden" id="rewardModal"><div class="modal-backdrop" data-close></div><div class="modal-box reward-box"><button class="close-button" data-close>×</button><div class="reward-star">✦</div><div class="eyebrow">КЕЙС ОТКРЫТ</div><img class="reward-portrait" id="rewardPortrait" src="assets/brawlers/character_01.jpg" alt="Новый боец"><h2 id="rewardTitle">Новый боец!</h2><p id="rewardDesc">Ты открыл персонажа.</p><button class="primary-button" data-close>Отлично <span>✦</span></button></div></div>
+  <div class="modal hidden" id="caseSpinModal"><div class="modal-backdrop"></div><div class="modal-box spin-box"><div class="eyebrow">КЕЙС ШУМИЛИКА</div><h2>Кто присоединится?</h2><div class="roller-window"><span class="roller-pointer">▼</span><div class="case-roller" id="caseRoller"></div></div><p class="spin-caption">Крутим барабан бойцов...</p></div></div>
+  <div class="modal hidden" id="upgradeModal"><div class="modal-backdrop"></div><div class="modal-box upgrade-spin-box"><button class="close-button" data-close>×</button><div class="eyebrow">УЛУЧШЕНИЕ БОЙЦА</div><h2 id="upgradeSpinTitle">Колесо улучшений</h2><div class="wheel-pointer">▼</div><div class="upgrade-wheel" id="upgradeWheel"><div class="wheel-label wl1">СКОРОСТЬ</div><div class="wheel-label wl2">СИЛА</div><div class="wheel-label wl3">БОНУС</div><div class="wheel-label wl4">СПОСОБНОСТЬ</div><div class="wheel-center">✦</div></div><p id="upgradeSpinResult">Колесо выбирает усиление...</p></div></div>
+  <div class="modal hidden" id="adminModal"><div class="modal-backdrop" data-close></div><div class="modal-box admin-box"><button class="close-button" data-close>×</button><div class="eyebrow">OWNER · УПРАВЛЕНИЕ ИГРОКАМИ</div><h2>Админ-панель</h2><div class="admin-controls"><label>Игрок<select id="adminTarget"></select></label><label>Монеты<input id="adminAmount" type="number" value="100" step="1"></label><div class="admin-buttons"><button id="adminGiveCoins">+ Выдать</button><button id="adminTakeCoins">− Забрать</button></div><label>Персонаж<select id="adminHero"></select></label><button id="adminGiveHero">Выдать персонажа</button><div class="admin-buttons"><button id="adminBan">Забанить</button><button id="adminUnban">Разбанить</button></div></div><div id="adminMessage" class="admin-message"></div><div class="admin-users" id="adminUsers"></div></div></div>
+  <div class="auth-screen hidden" id="authScreen"><div class="auth-card"><div class="brand-mark auth-mark">↗</div><div class="eyebrow">ПОТАПЕНКО: ПОБЕГ</div><h1 id="authTitle">Вход в игру</h1><p>Создай аккаунт, чтобы сохранить бойцов, монеты и улучшения на этом устройстве.</p><form id="authForm"><label>Логин<input id="authUsername" autocomplete="username" minlength="3" maxlength="20" required></label><label>Пароль<input id="authPassword" type="password" autocomplete="current-password" minlength="6" required></label><button class="primary-button" id="authSubmit">Войти <span>→</span></button></form><button class="auth-switch" id="authSwitch">Нет аккаунта? Зарегистрироваться</button><div class="auth-error" id="authError"></div></div></div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
